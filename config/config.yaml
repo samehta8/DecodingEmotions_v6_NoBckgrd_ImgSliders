@@ -6,15 +6,15 @@ paths:
 
   # Video source: "local" only (Google Drive support removed)
   # - "local": Load videos from local filesystem (video_path)
-  video_source: "local"
+  video_source: "online"
 
   # Local filesystem paths (used when video_source = "local")
-  video_path: "data/videos/" # use for video study
-  #video_path: "data/videos_screenshots/" # use for image study
+  #video_path: "data/videos/" # use for video study
+  video_path: "data/videos_screenshots/" # use for image study
 
   # Familiarization videos (always the same 3 videos for all users)
-  familiarization_video_path: "data/videos_familiarization_videos" # use for video study
-  #familiarization_video_path: "data/videos_familiarization" # use for image study
+  #familiarization_video_path: "data/videos_familiarization_videos" # use for video study
+  familiarization_video_path: "data/videos_familiarization_screenshots" # use for image study
 
 settings:
   min_ratings_per_video: 40
@@ -70,7 +70,7 @@ settings:
   #   "local"  - Save JSON files to local filesystem only (for development)
   #   "online" - Save to Google Sheets + Google Drive JSON (for production)
   #   "both"   - Save to all three: Google Sheets + Google Drive + Local filesystem (maximum redundancy)
-  storage_mode: "online"
+  storage_mode: "local"
 
 # Screen layout proportions for VideoPlayerScreen
 # These values control the relative heights of different sections (must sum to 1.0)
