@@ -5,6 +5,7 @@ Dynamically builds form based on config/questionnaire_fields.yaml.
 import streamlit as st
 from utils.config_loader import load_questionnaire_fields
 from utils.data_persistence import save_user_data, get_all_existing_user_ids
+from utils.gsheets_manager import append_user_to_gsheets
 
 def show():
     """Display the questionnaire screen."""
@@ -235,6 +236,12 @@ def show_confirmation_panel():
         if st.button("Understood. Proceed ▶️", use_container_width=True, type="primary"):
             # Save user data and proceed
             if save_user_data(user):
+                # Also save to Google Sheets
+                try:
+                    append_user_to_gsheets(user.__dict__)
+                except Exception as e:
+                    print(f"[WARNING] GSheets user save failed: {e}")
+
                 # Check if familiarization is enabled
                 config = st.session_state.config
                 enable_familiarization = config.get('settings', {}).get('enable_familiarization', True)

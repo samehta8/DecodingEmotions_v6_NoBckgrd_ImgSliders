@@ -14,6 +14,7 @@ from utils.config_loader import load_rating_scales
 from utils.data_persistence import save_rating, get_rated_videos_for_user
 from utils.video_rating_display import display_video_rating_interface
 from utils.gdrive_manager import get_all_video_filenames, get_video_path
+from utils.gsheets_manager import append_rating_to_gsheets
 from utils.device_detection import get_device_info_cached
 
 def stratified_sample_videos(videos_to_rate, df_metadata, number_of_videos, strat_config):
@@ -391,6 +392,13 @@ def display_rating_screen(action_id, video_filename, config):
             if save_rating(user.user_id, action_id, scale_values):
                 st.success("✅ Rating saved successfully!")
 
+                # Also save to Google Sheets
+                try:
+                    rating_data = {'user_id': user.user_id, 'action_id': action_id, **scale_values}
+                    append_rating_to_gsheets(rating_data)
+                except Exception as e:
+                    print(f"[WARNING] GSheets save failed: {e}")
+
                 # Track win/loss prediction for this session (for completion screen)
                 win_loss_prediction = scale_values.get('Win or Loss')
                 if win_loss_prediction is not None:
@@ -576,6 +584,13 @@ def display_rating_interface(action_id, video_filename, config):
             # Save rating
             if save_rating(user.user_id, action_id, scale_values):
                 st.success("✅ Rating saved successfully!")
+
+                # Also save to Google Sheets
+                try:
+                    rating_data = {'user_id': user.user_id, 'action_id': action_id, **scale_values}
+                    append_rating_to_gsheets(rating_data)
+                except Exception as e:
+                    print(f"[WARNING] GSheets save failed: {e}")
 
                 # Track win/loss prediction for this session (for completion screen)
                 win_loss_prediction = scale_values.get('Win or Loss')
