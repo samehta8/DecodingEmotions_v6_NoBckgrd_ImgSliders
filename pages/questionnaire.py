@@ -238,7 +238,7 @@ def show_confirmation_panel():
             if save_user_data(user):
                 # Also save to Google Sheets
                 try:
-                    append_user_to_gsheets(user.__dict__)
+                    append_user_to_gsheets(user.to_dict())
                 except Exception as e:
                     print(f"[WARNING] GSheets user save failed: {e}")
 
